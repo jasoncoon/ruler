@@ -17,33 +17,73 @@
     <div class="grid-container">
       <div class="header">
 				<div>
-					<span style="margin-right: 1rem">
-						Width: <input id="width" type="number" min="1" step=".01" />	mm
-					</span>
-					<span style="margin-right: 1rem">
-						Height: <input id="height" type="number" min="1" step=".01" /> mm
+					<span>SVG Ruler Generator</span>
+					<span style="float: right;">
+						<a href="https://github.com/jasoncoon/ruler">Source Code</a>
 					</span>
 				</div>
 
 				<div>
-					Major Grid
+					<form>
+						Units:
+						<label>
+							<input id="mm" type="radio" name="units" value="mm">mm
+						</label>
+						<label>
+							<input id="inches" type="radio" name="units" value="inches">inches
+						</label>
+					</form>
+				</div>
+
+				<div>
 					<span style="margin-right: 1rem">
-						Spacing: <input id="majorSpacing" type="number" min="1" step=".01" /> mm
+						Width: <input id="width" type="number" min="1" step=".01" />
 					</span>
 					<span style="margin-right: 1rem">
-						Height: <input id="majorHeight" type="number" min="1" step=".01" /> mm
+						Height: <input id="height" type="number" min="1" step=".01" />
 					</span>
 				</div>
+
 				<div>
-					Minor Grid
+					Large Grid<br />
 					<span style="margin-right: 1rem">
-						Spacing: <input id="minorSpacing" type="number" min="1" step=".01" /> mm
+						Spacing: <input id="largeSpacing" type="number" min="1" step=".01" />
 					</span>
 					<span style="margin-right: 1rem">
-						Height: <input id="minorHeight" type="number" min="1" step=".01" /> mm
+						Height: <input id="largeHeight" type="number" min="1" step=".01" />
+					</span>
+					<span style="margin-right: 1rem">
+						Numbers:<input id="largeNumbers" type="checkbox" style="width: 20px" /><input id="largeNumberSize" type="number" min="1" step=".01" /> pt &nbsp;
+						Fill:<input id="largeNumberFill" type="checkbox" style="width: 20px" />
 					</span>
 				</div>
+
 				<div>
+					Medium Grid<br />
+					<span style="margin-right: 1rem">
+						Spacing: <input id="mediumSpacing" type="number" min="1" step=".01" />
+					</span>
+					<span style="margin-right: 1rem">
+						Height: <input id="mediumHeight" type="number" min="1" step=".01" />
+					</span>
+					<span style="margin-right: 1rem">
+						Numbers:<input id="mediumNumbers" type="checkbox" style="width: 20px" /><input id="mediumNumberSize" type="number" min="1" step=".01" /> pt &nbsp;
+						Fill:<input id="mediumNumberFill" type="checkbox" style="width: 20px" />
+					</span>
+				</div>
+				
+				<div>
+					Small Grid:<input id="smallGrid" type="checkbox" style="width: 20px" /><br />
+					<span style="margin-right: 1rem">
+						Spacing: <input id="smallSpacing" type="number" min="1" step=".01" />
+					</span>
+					<span style="margin-right: 1rem">
+						Height: <input id="smallHeight" type="number" min="1" step=".01" />
+					</span>
+				</div>
+				
+				<div>
+					<button id="redraw">Redraw</button>
 					<button id="saveSvg">Save SVG</button>
 				</div>
 			</div>
