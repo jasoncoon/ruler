@@ -12,60 +12,47 @@ let majorSpacing = 10;
 let minorHeight = 5;
 let minorSpacing = 1;
 
-let strokeWidth = 0.3;
-
 window.onload = function () {
   paper.setup("canvas");
 
   create();
 
-  let inputWidth = document.getElementById("width");
-  inputWidth.value = width;
-  inputWidth.onchange = (event) => {
-    width = Number.parseFloat(event.target.value);
-    create();
-  };
+  initFloatInput("width", width, (value) => (width = value));
+  initFloatInput("height", height, (value) => (height = value));
+  initFloatInput(
+    "majorSpacing",
+    majorSpacing,
+    (value) => (majorSpacing = value)
+  );
 
-  let inputHeight = document.getElementById("height");
-  inputHeight.value = height;
-  inputHeight.onchange = (event) => {
-    height = Number.parseFloat(event.target.value);
-    create();
-  };
+  initFloatInput("majorHeight", majorHeight, (value) => (majorHeight = value));
+  initFloatInput(
+    "majorSpacing",
+    majorSpacing,
+    (value) => (majorSpacing = value)
+  );
 
-  let inputMajorSpacing = document.getElementById("majorSpacing");
-  inputMajorSpacing.value = majorSpacing;
-  inputMajorSpacing.onchange = (event) => {
-    majorSpacing = Number.parseFloat(event.target.value);
-    create();
-  };
-
-  let inputMajorHeight = document.getElementById("majorHeight");
-  inputMajorHeight.value = majorSpacing;
-  inputMajorHeight.onchange = (event) => {
-    majorHeight = Number.parseFloat(event.target.value);
-    create();
-  };
-
-  let inputMinorSpacing = document.getElementById("minorSpacing");
-  inputMinorSpacing.value = minorSpacing;
-  inputMinorSpacing.onchange = (event) => {
-    minorSpacing = Number.parseFloat(event.target.value);
-    create();
-  };
-
-  let inputMinorHeight = document.getElementById("minorHeight");
-  inputMinorHeight.value = minorSpacing;
-  inputMinorHeight.onchange = (event) => {
-    minorHeight = Number.parseFloat(event.target.value);
-    create();
-  };
+  initFloatInput("minorHeight", minorHeight, (value) => (minorHeight = value));
+  initFloatInput(
+    "minorSpacing",
+    minorSpacing,
+    (value) => (minorSpacing = value)
+  );
 
   let buttonSaveSvg = document.getElementById("saveSvg");
   buttonSaveSvg.onclick = (event) => {
     saveSvg();
   };
 };
+
+function initFloatInput(name, value, onChange) {
+  let input = document.getElementById(name);
+  input.value = value;
+  input.onchange = (event) => {
+    onChange(Number.parseFloat(event.target.value));
+    create();
+  };
+}
 
 function create() {
   const scale = 96 / 25.4;
@@ -88,6 +75,8 @@ function create() {
   }
 
   console.log({ width, height });
+
+  let strokeWidth = 0.4 / zoom;
 
   let outlineRectangle = new Rectangle(
     new Point(0, 0),
