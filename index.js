@@ -179,7 +179,9 @@ function updateUnitDefaults() {
     mediumSpacing = inputMediumSpacing.value = 1;
     mediumHeight = inputMediumHeight.value = 5;
 
-    smallGrid = false;
+    smallGrid = inputSmallGrid.checked = false;
+    smallSpacing = inputSmallSpacing.value = 0.5;
+    smallHeight = inputSmallHeight.value = 2.5;
   } else if (inches) {
     width = inputWidth.value = 12;
     height = inputHeight.value = 1;
@@ -212,13 +214,8 @@ function draw() {
   let scaledHeight = height * factor;
 
   let scaledLargeSpacing = largeSpacing * factor;
-  let scaledLargeHeight = largeHeight * factor;
-
   let scaledMediumSpacing = mediumSpacing * factor;
-  let scaledMediumHeight = mediumHeight * factor;
-
   let scaledSmallSpacing = smallSpacing * factor;
-  let scaledSmallHeight = smallHeight * factor;
 
   const zoom = (viewWidth / scaledWidth) * 3.75;
   view.zoom = zoom;
@@ -242,73 +239,89 @@ function draw() {
   outlinePath.shadowColor = null;
   outlinePath.shadowOffset = 0;
 
-  let largeNumber = 0;
+  // large
+  drawGrid(
+    scaledWidth,
+    scaledLargeSpacing,
+    largeHeight * factor,
+    strokeWidth,
+    null,
+    largeNumbers,
+    largeNumberSize,
+    largeNumberFill
+  );
 
-  for (
-    let large = scaledLargeSpacing;
-    large < scaledWidth;
-    large += scaledLargeSpacing
-  ) {
-    largeNumber++;
+  // medium
+  drawGrid(
+    scaledWidth,
+    scaledMediumSpacing,
+    mediumHeight * factor,
+    strokeWidth,
+    mm ? [] : [scaledLargeSpacing],
+    mediumNumbers,
+    mediumNumberSize,
+    mediumNumberFill
+  );
 
-    let path = new Path();
-    path.strokeColor = "black";
-    path.strokeWidth = strokeWidth;
-    path.add(new Point(large, 0));
-    path.add(new Point(large, scaledLargeHeight));
-
-    if (largeNumbers) {
-      let text = new paper.PointText(
-        new Point(large, scaledLargeHeight + largeNumberSize)
-      );
-      text.content = largeNumber;
-      text.justification = "center";
-      text.fillColor = largeNumberFill ? "black" : null;
-      text.strokeColor = "black";
-      text.strokeWidth = strokeWidth;
-      text.fontSize = largeNumberSize;
-    }
-  }
-
-  let mediumNumber = 0;
-
-  for (
-    let medium = scaledMediumSpacing;
-    medium < scaledWidth;
-    medium += scaledMediumSpacing
-  ) {
-    mediumNumber++;
-
-    let path = new Path();
-    path.strokeColor = "black";
-    path.strokeWidth = strokeWidth;
-    path.add(new Point(medium, 0));
-    path.add(new Point(medium, scaledMediumHeight));
-
-    if (mediumNumbers) {
-      let text = new paper.PointText(
-        new Point(medium, scaledMediumHeight + mediumNumberSize)
-      );
-      text.content = medium.toPrecision(3).toLocaleString();
-      text.justification = "center";
-      text.fillColor = mediumNumberFill ? "black" : null;
-      text.strokeColor = "black";
-      text.strokeWidth = strokeWidth;
-      text.fontSize = mediumNumberSize;
-    }
-  }
-
+  // small
   if (smallGrid) {
-    for (
-      let small = scaledSmallSpacing;
-      small < scaledWidth;
-      small += scaledSmallSpacing
-    ) {
-      let path = new Path();
-      path.strokeColor = "black";
-      path.strokeWidth = strokeWidth;
-      path.add(new Point(small, 0));
-      path.add(new Point(small, scaledSmallHeight));
+    drawGrid(
+      scaledWidth,
+      scaledSmallSpacing,
+      smallHeight * factor,
+      strokeWidth,
+      mm ? [] : [scaledLargeSpacing, scaledMediumSpacing]
+    );
+  }
+}
+
+function drawGrid(
+  scaledWidth,
+  scaledSpacing,
+  scaledHeight,
+  strokeWidth,
+  linesToSkip,
+  numbers,
+  numberSize,
+  numberFill
+) {
+  let number = 0;
+
+  for (let i = scaledSpacing; i < scaledWidth; i += scaledSpacing) {
+    number++;
+
+    if (linesToSkip) {
+      let skipLine = false;
+      for (let lineToSkip of linesToSkip) {
+        if (i % lineToSkip === 0) {
+          skipLine = true;
+          console.log({
+            scaledSpacing,
+            i,
+            skipLine,
+            skip: lineToSkip,
+            mod: i % lineToSkip,
+          });
+          break;
+        }
+      }
+      if (skipLine) continue;
+    }
+
+    let path = new Path();
+    path.strokeColor = "black";
+    path.strokeWidth = strokeWidth;
+    path.add(new Point(i, 0));
+    path.add(new Point(i, scaledHeight));
+
+    if (numbers) {
+      let text = new paper.PointText(new Point(i, scaledHeight + numberSize));
+      text.content = number;
+      text.justification = "center";
+      text.fillColor = numberFill ? "black" : null;
+      text.strokeColor = "black";
+      text.strokeWidth = strokeWidth;
+      text.fontSize = numberSize;
     }
   }
 }
