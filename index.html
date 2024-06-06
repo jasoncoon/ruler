@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="index.css"></link>
+
+    <!-- Load the Paper.js library -->
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/paper@0.12.17/dist/paper-full.min.js"
+    ></script>
+
+    <script type="text/javascript" src="index.js"></script>
+
+  </head>
+
+  <body>
+    <div class="grid-container">
+      <div class="header">
+				<div>
+					<span style="margin-right: 1rem">
+						Width: <input id="width" type="number" min="1" step=".01" />	mm
+					</span>
+					<span style="margin-right: 1rem">
+						Height: <input id="height" type="number" min="1" step=".01" /> mm
+					</span>
+				</div>
+
+				<div>
+					Major Grid
+					<span style="margin-right: 1rem">
+						Spacing: <input id="majorSpacing" type="number" min="1" step=".01" /> mm
+					</span>
+					<span style="margin-right: 1rem">
+						Height: <input id="majorHeight" type="number" min="1" step=".01" /> mm
+					</span>
+				</div>
+				<div>
+					Minor Grid
+					<span style="margin-right: 1rem">
+						Spacing: <input id="minorSpacing" type="number" min="1" step=".01" /> mm
+					</span>
+					<span style="margin-right: 1rem">
+						Height: <input id="minorHeight" type="number" min="1" step=".01" /> mm
+					</span>
+				</div>
+				<div>
+					<button id="saveSvg">Save SVG</button>
+				</div>
+			</div>
+      <!-- <div class="menu">Menu</div> -->
+      <div class="main">
+        <canvas id="canvas" resize></canvas>
+      </div>
+      <!-- <div class="right">Right</div> -->
+      <!-- <div class="footer">Footer</div> -->
+    </div>
+  </body>
+</html>

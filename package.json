@@ -1,0 +1,13 @@
+{
+  "name": "ruler-generator",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "serve"
+  },
+  "author": "Jason Coon",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "serve": "^14.2.3"
+  }
+}
