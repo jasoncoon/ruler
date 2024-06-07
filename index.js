@@ -136,7 +136,7 @@ window.onload = function () {
   };
 };
 
-function initFloatInput(name, value, onChange) {
+function initFloatInput(name, value, oninput) {
   let input = document.getElementById(name);
   if (!input) {
     console.error(`input not found: ${name}`);
@@ -144,15 +144,22 @@ function initFloatInput(name, value, onChange) {
   }
 
   input.value = value;
-  input.onchange = (event) => {
-    onChange(Number.parseFloat(event.target.value));
-    draw();
+  input.oninput = (event) => {
+    try {
+      if (!event.target.value) return;
+      const value = Number.parseFloat(event.target.value);
+      if (!value || isNaN(value)) return;
+      oninput(value);
+      draw();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return input;
 }
 
-function initCheckedInput(name, value, onChange) {
+function initCheckedInput(name, value, oninput) {
   let input = document.getElementById(name);
   if (!input) {
     console.error(`input not found: ${name}`);
@@ -160,8 +167,8 @@ function initCheckedInput(name, value, onChange) {
   }
 
   input.checked = value;
-  input.onchange = (ev) => {
-    onChange(ev.target.checked);
+  input.oninput = (ev) => {
+    oninput(ev.target.checked);
     draw();
   };
 
@@ -242,6 +249,7 @@ function draw() {
   // large
   drawGrid(
     scaledWidth,
+    largeSpacing,
     scaledLargeSpacing,
     largeHeight * factor,
     strokeWidth,
@@ -254,6 +262,7 @@ function draw() {
   // medium
   drawGrid(
     scaledWidth,
+    mediumSpacing,
     scaledMediumSpacing,
     mediumHeight * factor,
     strokeWidth,
@@ -267,6 +276,7 @@ function draw() {
   if (smallGrid) {
     drawGrid(
       scaledWidth,
+      smallSpacing,
       scaledSmallSpacing,
       smallHeight * factor,
       strokeWidth,
@@ -277,6 +287,7 @@ function draw() {
 
 function drawGrid(
   scaledWidth,
+  spacing,
   scaledSpacing,
   scaledHeight,
   strokeWidth,
@@ -316,7 +327,7 @@ function drawGrid(
 
     if (numbers) {
       let text = new paper.PointText(new Point(i, scaledHeight + numberSize));
-      text.content = number;
+      text.content = number * spacing;
       text.justification = "center";
       text.fillColor = numberFill ? "black" : null;
       text.strokeColor = "black";
